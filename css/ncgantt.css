@@ -1,0 +1,328 @@
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+		
+		span {
+			display: inline;
+		}
+		        
+        .gannt_container {
+            max-width: 100%;
+			/*width: 98%;*/
+            margin: 0 3px;
+            background: white;
+            padding: 20px;
+			padding-top: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+			margin-top: 0px;
+            margin-bottom: 10px;
+			font-size: 16px;
+			text-align: center;
+        }
+		        
+        .settings-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .settings-form.hidden {
+            max-height: 0;
+        }
+
+        .settings-header {
+            background: #305e92;
+            color: white;
+            padding: 3px 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-header:hover {
+            background: #006aa3;
+        }
+
+        .settings-header h3 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .dropdown-arrow {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+			rotate: 180deg;
+        }
+		.rotated {
+			 rotate: 0deg;
+		}
+
+        .settings-form {
+            max-height: 400px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .settings-form.hidden {
+            max-height: 0;
+        }
+
+        .form-content {
+            padding: 20px;
+        }
+		
+		#boardSelect {
+			min-width: 150px;
+			min-height: 28px;
+			height: 28px;
+			cursor: pointer;
+		}
+		
+        .status-section {
+			width: 100%;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 0px;
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			gap: 15px; /* optional spacing between elements */
+			flex-wrap: wrap; /* allows wrapping only when space runs out */
+		}
+
+        
+        .config-section h2 {
+            margin-top: 0;
+            color: #555;
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+			width: 98%;
+        }
+        .form-group-status {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			white-space: nowrap; /* prevent label from breaking unnecessarily */
+        }
+
+        
+        .label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: bold;
+			white-space: nowrap; /* ensure the label text doesn't break mid-word */
+        }
+        
+        .form-content input, .form-content select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button_ {
+            background: #305e92;
+            color: white;
+            border: none;
+            padding: 4px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #006aa3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        		
+        #gantt-container {
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+        }
+        
+        .success {
+            background: #efe;
+            color: #363;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+        }
+		
+		.error, .success, .loading {
+			padding:2px 8px;
+            border-radius: 4px;
+		}
+        
+        .stack-colors {
+            margin-top: 5px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stack-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .color-box {
+            width: 20px;
+            height: 13px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        
+        .labels-section {
+            margin-top: 5px;
+            padding-top: 0px;
+            border-top: 2px solid #ddd;;
+        }
+        
+        .labels-title {
+            font-weight: bold;
+        }
+		
+		<!-- html popup style -->
+        #htmlOutput {
+            min-height: 400px;
+			min-width: 160px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fafafa;
+            overflow-x: auto;
+        }
+        
+        #htmlOutput ul, #htmlOutput ol {
+            margin: 0.5em 0;
+            padding-left: 1.7em;
+        }
+        
+        #htmlOutput li {
+            margin: 0.25em 0;
+			padding-left: 0.3em;
+        }
+        
+        /* Remove bullets from checkbox list items */
+        #htmlOutput li:has(input[type="checkbox"]) {
+            list-style: none;
+            margin-left: -1.5em;
+            position: relative;
+        }
+        
+        /* Style checkboxes to allow proper text alignment */
+        #htmlOutput input[type="checkbox"] {
+            position: absolute;
+            left: 0;
+            top: 0.05em;
+            margin: 0;
+			margin-left: 0.2em;
+        }
+        
+        /* Indent text content in checkbox list items */
+        #htmlOutput li:has(input[type="checkbox"]) {
+            padding-left: 1.8em;
+        }
+        
+        #htmlOutput p {
+			margin: 0;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        
+        #htmlOutput input[type="checkbox"] {
+            margin-right: 0.5em;
+			height: 14px;
+			min-height: 14px;
+        }	
+		.md_textarea {
+			width: 98%;
+			font-family: "Courier New", "Courier";
+			font-size: inherit;
+			padding: 4px;
+			cursor: text;
+		}
+		
+		<!-- Change frappe gantt styling -->
+		.gantt-container {
+			margin-bottom: 15px;
+			margin-top: 0px;
+		}
+		.viewmode-select_ {
+			margin-top: 10px;
+			height: 18.6px;
+		}
+		.viewmode-select {
+			min-width: 100px;
+		}
+		.upper-text{
+			margin-top: 0px;
+		}
+		.gantt-container .popup-wrapper { 
+			max-width: 400px;
+			min-width: 150px;
+		}
+		
+		<!-- Html-MD-Toggle -->
+		.box {
+		  position: relative;
+		  padding: 20px;
+		  border: 1px solid #ccc;
+		  margin-bottom: 20px;
+		}
+
+		.html-md-icon-toggle {
+		  position: absolute;
+		  bottom: 15px;
+		  right: 10px;
+		  cursor: pointer;
+		  font-size: 16;
+		  user-select: none;
+		  background-image: unset;
+		}
+
+		#toggleBtn2, #toggleBtn {
+		  
+		}
+
+		<!-- Nextcloud tweeking -->
+		#content {
+			top: 0px;
+			left: 11px;
+			margin-left: 8px;
+		}
+		<!-- Nextcloud tweeking -->
+		.app-ncgantt {
+			top: 0px;
+			left: 11px;
+			margin-left: 8px;
+		}

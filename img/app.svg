@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+	<g fill="#fff" stroke="#fff">
+		<svg y="1">
+		<!-- Timeline grid lines (vertical)
+		<line x1="3"  y1="3" x2="3"  y2="13" stroke-width="0.3" opacity="0.8"/>
+		<line x1="6"  y1="3" x2="6"  y2="13" stroke-width="0.3" opacity="0.8"/>
+		<line x1="9"  y1="3" x2="9"  y2="13" stroke-width="0.3" opacity="0.8"/>
+		<line x1="12" y1="3" x2="12" y2="13" stroke-width="0.3" opacity="0.8"/>
+		 -->
+		 
+		<!-- Gantt bars -->
+		<!-- Task 1 -->
+		<rect x="2" y="3" width="6" height="2.2" rx="0.5" stroke-width="0" />
+
+		<!-- Task 2 -->
+		<rect x="5" y="6.5" width="7.8" height="2.2" rx="0.5" stroke-width="0"/>
+
+		<!-- Task 3 -->
+		<rect x="9" y="10" width="4.5" height="2.2" rx="0.5" stroke-width="0"/>
+
+		<!-- Optional: Add a border for better visibility at small sizes -->
+		<rect x="0.5" y="1" width="15" height="13" fill="none" stroke-width="1" rx="1"/>
+		</svg>
+  </g>
+</svg>
