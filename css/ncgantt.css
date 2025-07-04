@@ -1,14 +1,4 @@
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-		
-		span {
-			display: inline;
-		}
-		        
+				        
         .gannt_container {
             max-width: 100%;
 			/*width: 98%;*/
@@ -19,73 +9,12 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        h1 {
-            color: #333;
-			margin-top: 0px;
-            margin-bottom: 10px;
-			font-size: 16px;
-			text-align: center;
-        }
-		        
-        .settings-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .settings-form.hidden {
-            max-height: 0;
-        }
-
-        .settings-header {
-            background: #305e92;
-            color: white;
-            padding: 3px 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .settings-header:hover {
-            background: #006aa3;
-        }
-
-        .settings-header h3 {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .dropdown-arrow {
-            font-size: 14px;
-            transition: transform 0.3s ease;
-			rotate: 180deg;
-        }
-		.rotated {
-			 rotate: 0deg;
-		}
-
-        .settings-form {
-            max-height: 400px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: white;
-        }
-
-        .settings-form.hidden {
-            max-height: 0;
-        }
-
-        .form-content {
-            padding: 20px;
-        }
+        		        
 		
 		#boardSelect {
 			min-width: 150px;
-			min-height: 28px;
-			height: 28px;
+			min-height: 25px;
+			height: 25px;
 			cursor: pointer;
 		}
 		
@@ -101,18 +30,7 @@
 			flex-wrap: wrap; /* allows wrapping only when space runs out */
 		}
 
-        
-        .config-section h2 {
-            margin-top: 0;
-            color: #555;
-            font-size: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-			width: 98%;
-        }
-        .form-group-status {
+        .status-field {
 			display: flex;
 			align-items: center;
 			gap: 5px;
@@ -127,31 +45,23 @@
             font-weight: bold;
 			white-space: nowrap; /* ensure the label text doesn't break mid-word */
         }
-        
-        .form-content input, .form-content select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        button_ {
+                
+        #loadBoardsBtn {
             background: #305e92;
             color: white;
             border: none;
-            padding: 4px 30px;
+            padding: 3px 80px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             margin-top: 10px;
         }
         
-        button:hover {
+        #loadBoardsBtn:hover {
             background: #006aa3;
         }
         
-        button:disabled {
+        #loadBoardsBtn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
@@ -266,7 +176,7 @@
         }	
 		.md_textarea {
 			width: 98%;
-			font-family: "Courier New", "Courier";
+			/*font-family: "Courier New", "Courier";*/
 			font-size: inherit;
 			padding: 4px;
 			cursor: text;
@@ -315,14 +225,15 @@
 		}
 
 		<!-- Nextcloud tweeking -->
+		/*
 		#content {
 			top: 0px;
 			left: 11px;
 			margin-left: 8px;
 		}
-		<!-- Nextcloud tweeking -->
 		.app-ncgantt {
 			top: 0px;
 			left: 11px;
 			margin-left: 8px;
 		}
+		*/

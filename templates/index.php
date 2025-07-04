@@ -13,13 +13,12 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 </head>
 <body>
 <div id="app">
-	-->
 
-<!--
     <div id="app-navigation">
         <h2>Gantt Chart</h2>
     </div>
--->
+	-->
+
     <div id="app-content">
 
     <div class="gannt_container" id="ganntContainer">
@@ -57,15 +56,17 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
          </div>
 		<div class="status-section">
 			<div id="boardSelection" style="display: flex; margin-top: 0px;">
-				<div class="form-group-status">
-					<label for="boa	rdSelect">Board:</label>
+				<div class="status-field">
+					<label for="boardSelect">Board:</label>
 					<select id="boardSelect">
 						<option value=""> </option>
 					</select>
 				</div>
 			</div>
 			
-			<div id="status"></div> <!-- Example content -->
+			<div id="status"></div> <!-- status messages -->
+			<div> <button id="boardExportBtn">Export board</button></div>
+			<div> <button id="boardImportBtn">Import board</button></div>
 		</div>
         <div id="gantt-container"></div>
     </div>

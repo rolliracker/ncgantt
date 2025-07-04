@@ -1,5 +1,55 @@
 //"use strict";
 
+		// Import / Export ---->
+	    // Export function -->
+		function exportDictAsJSON(map, filename) {
+			if (map.constructor != Object) {  // check if dict is really a dictionary
+				return;
+			}
+
+			const jsonString = JSON.stringify(map, null, 2);
+			const blob = new Blob([jsonString], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			a.style.display = 'none';
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+
+			URL.revokeObjectURL(url); // Clean up
+		}
+		// <--
+	    // Import function -->
+		function importDictFromJSON(callback) {
+		  const input = document.createElement('input');
+		  input.type = 'file';
+		  input.accept = '.json,application/json';
+		  input.onchange = (event) => {
+			const file = event.target.files[0];
+			if (!file) return;
+
+			const reader = new FileReader();
+			reader.onload = (e) => {
+			  try {
+				//console.log(e.target.result);
+				const json = JSON.parse(e.target.result);
+				//console.log(json);
+				callback(json);
+			  } catch (err) {
+				alert('Invalid JSON file.');
+				console.error(err);
+			  }
+			};
+			reader.readAsText(file);
+		  };
+		  input.click();
+		}		// <--
+		// <----
+
+
     // <!-- Gantt Chart section --> 
 		function isInsideNextcloud() {
 			// Check for OC/OCA globals
@@ -22,10 +72,9 @@
 			// All your gantt chart initialization code here
 			setupEventListeners();
 			setupEnvironment(isNextcloud);
-			console.log("fdsafdsaafdsa 1");
 		});
 
-		function setupEventListeners() {
+		async function setupEventListeners() {
 			let el = document.getElementById('settingsHeader');
 			el.onclick = toggleSettings;
 			
@@ -42,9 +91,114 @@
 					handleCheckboxClicked(event.target);
 				}
 			});
-		}	
+			
+			// Hook up the Export Button
+			document.getElementById('boardExportBtn').addEventListener('click', () => {
+				let filename = "board_data.json"  // default
+				if (boardData.title) {
+					filename = boardData.title + ".json";
+					filename = sanitizeFilename(filename);
+				}
+				exportDictAsJSON(boardData, filename);
+			});
+			document.getElementById('boardImportBtn').addEventListener('click', () => {
+				importDictFromJSON((importedBoardData) => {
+					importBoard(importedBoardData);
+				});
+			});
+		}
+		async function importBoard(importedBoardData) {
+			try{
+				const boardId = await clearAndRecreateBoard(importedBoardData);
+				console.log("boardId", boardId);
+				await fetchBoards(); // read new board list back from API
+				document.getElementById('boardSelect').value=boardId;  // select the imported board
+			} catch (error) {
+				showError('Error while updating card: ' + error.message);
+				throw error;
+			}
+		}
+		async function clearAndRecreateBoard(importedBoard) {
+			let boardId = null;
+			
+			// Check if aboard with same title exists
+			let boards = await makeApiCall(`/boards`);
+
+			for (const board of boards) {
+				if (board.title == importedBoard.title && !board.deletedAt) { 
+					
+					// get user confirmation
+					let text = `A board with the name '${board.title}' already exists. Do you want to replace it?`;
+					if (confirm(text) == false) {
+						return null;
+					}
+					boardId = board.id;
+					
+					// Delete all existing stacks (which deletes their cards too)
+					console.log("Delete all stacks...");
+					for (const stack of board.stacks) {
+						console.log(stack.id, stack);
+						await makeApiCall(`/boards/${boardId}/stacks/${stack.id}`, 'DELETE');
+					}
+					break;
+				}
+			}
+			
+			if (!boardId) {
+				// Create new Board
+				console.log("Create new Board...")
+				const body = {
+					title: importedBoard.title,
+					color: importedBoard.color
+				}
+				newBoard = await makeApiCall(`/boards`, 'POST', body );
+				boardId = newBoard.id;
+			}
+			console.log("boardId",boardId);
+			
+			if (boardId) {
+				// Recreate stacks and cards
+				console.log("Create new stacks...");
+				for (const importedStack of importedBoard.stacks) {
+					// Create stack
+					console.log("Create new stack...");
+					delete(importedStack.id);
+					delete(importedStack.boardId);
+					const newStack = await makeApiCall(`/boards/${boardId}/stacks`, 'POST', importedStack);
+					//console.log(newStack.id, newStack);
+					
+					// Create cards in the new stack
+					console.log("Create cards...");
+					for (const importedCard of importedStack.cards) {
+						delete(importedCard.id);
+						delete(importedCard.stackId);
+						//console.log(boardId, newStack.id, importedCard);
+						const body = {
+							title: importedCard.title,
+							type: 'plain',
+							order: importedCard.order,
+							description: importedCard.description,
+							duedate: importedCard.duedate
+						}
+						console.log(boardId, newStack.id, body);
+						const newCard = await makeApiCall(`/boards/${boardId}/stacks/${newStack.id}/cards`, 'POST', importedCard);
+						console.log(newCard.id, newCard);
+					}
+				}
+			}
+			console.log('Board successfully updated with imported data.');
+			return boardId;
+		}
+
+		
+		function sanitizeFilename(name) {
+		 return name
+			.replace(/[\/\\:*?"<>|]/g, '')   // Remove invalid characters
+			//.replace(/\s+/g, '_')            // Replace whitespace with underscores (optional)
+			.trim();
+		}
+
 		function setupEnvironment(nextcloud) {
-			console.log("fdsafdsaafdsa 2");
 			if (nextcloud) {
 				let el = document.getElementById('settingsContainer');
 				el.classList.add("hidden");
@@ -53,26 +207,7 @@
 				let el = document.getElementById('settingsContainer');
 				el.classList.remove("hidden");
 			}
-			
-			if (nextcloud) {
-				adjustNextcloudStyle();
-			}
 		}
-		function adjustNextcloudStyle() {
-			console.log("fdsafdsaafdsa 3");
-			const container = document.getElementById('content');
-			if (container) {
-				console.log("Change position of the content element");
-				container.style.top = '0';
-				container.style.left = '8px';
-				container.style.marginLeft = '0px';
-			}
-			else {
-				console.log("Content element does not exist!!!");
-			}			
-		}
-		console.log("Try now !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		adjustNextcloudStyle(); // try to do it emidiately
 	
 		let chart_options = {
 			'bar_height': 20,
@@ -80,6 +215,7 @@
 	
         let ganttChart = null;
         let boardData = null;
+		let boards = null;
         const stackColors = {};
         const colorPalette = [
             '#52ba52', '#5ca5d7', '#ff7f0e', '#ad91c6',
@@ -173,8 +309,9 @@
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('API Error Response:', errorText);
-                throw new Error(`API error: ${response.status} ${response.statusText} - ${errorText}`);
+                console.error('API Error Response (see console)', errorText);
+                //throw new Error(`API error: ${response.status} ${response.statusText} - ${errorText}`);
+                throw new Error(`API error`);
             }
             
             return await response.json();
@@ -188,20 +325,25 @@
 			console.log('Loading boards...');
 
             try {
-                const boards = await makeApiCall('/boards');
+                boards = await makeApiCall('/boards');
                 
                 const select = document.getElementById('boardSelect');
                 select.innerHTML = '<option value="">-- please select --</option>';
                 
+				let boards_count = 0;
                 boards.forEach(board => {
-                    const option = document.createElement('option');
-                    option.value = board.id;
-                    option.textContent = board.title;
-                    select.appendChild(option);
+					if(!board.deletedAt && !board.archived){
+						const option = document.createElement('option');
+						option.value = board.id;
+						option.textContent = board.title;
+						select.appendChild(option);
+						
+						boards_count++;
+					}
                 });
                 
                 document.getElementById('boardSelection').style.display = 'block';
-                showSuccess(`${boards.length} Board(s) found`);
+                showSuccess(`${boards_count} Board(s) found`);
 				
 				// Hide the form
 				toggleSettings('close');
@@ -212,6 +354,7 @@
                 btn.disabled = false;
 				console.log("...Loading boards done!");
             }
+			return boards;
         }
         
 		async function fetchBoardData() {
@@ -243,7 +386,7 @@
 					
 					if(!has_duplicates) {
 						// sort by order number
-						order_numbers.sort().reverse().forEach((order, index) => {
+						order_numbers.sort().forEach((order, index) => {
 							stack = boardData.stacks[stack_order_index[order]];
 							stacks_sorted.push(stack);
 						});
@@ -253,6 +396,9 @@
 					else {
 						console.log("Sorting stacks cannot be done (duplicate order numbers)", order_numbers);
 					}
+					
+					// stack order should be reversed to have progress from up to down (in Deck from left (done) to right (todo))
+					boardData.stacks.reverse();
 				}
 				// <---
 				
@@ -283,6 +429,7 @@
             }
         }
 
+	// frappe-gantt section ----->	
         function createGanttChart() {
 			console.log("createGanttChart...");
             if (!boardData || !boardData.stacks) {
@@ -298,7 +445,7 @@
 			let cardNum = 0;
 		
             // create tasks from all cards in a stack
-			
+	
 			// iterate over all stacks
             boardData.stacks.forEach((stack, stackIndex) => {
                 
@@ -354,16 +501,15 @@
             if (tasks.length === 0) {
                 showError('No cards found');
 				if (ganttChart) {
-					ganttChart.refresh([]);	
+					ganttChart.refresh([]);	// frappe-gantt
 					ganttHeightManager.fixGanttHeight();
 				}
                 return;
             }
 
-            
             try {
-                // Gantt Chart erstellen
-                ganttChart = new Gantt('#gantt', tasks, {
+                // Create Gantt chart 
+                ganttChart = new Gantt('#gantt', tasks, {  // frappe-gantt class
                     view_mode: 'Week',
                     date_format: 'YYYY-MM-DD',
                     view_mode_select: true,
@@ -372,42 +518,7 @@
 					padding: 16,
 					scroll_to: 'start',
                     popup_trigger: 'click',
-						
-					/* // custom pupup -->		
-                    custom_popup_html: function(task) {
-                        const startDateStr = task.start.toLocaleDateString('de-DE');
-                        const endDateStr = task.end.toLocaleDateString('de-DE');
-                        const descPreview = task.description ? 
-                            task.description.replaceAll.split('\n')
-                                .filter(line => !line.match(/^(?:Start|Startdatum|Progress|Fortschritt):/i))
-                                .join('<br>\n')
-                                .substring(0, 100) : '';
-                        
-                        // Create labels HTML
-                        let labelsHtml = '';
-                        if (task.labels && task.labels.length > 0) {
-                            labelsHtml = '<p><strong>Labels:</strong> ';
-                            labelsHtml += task.labels.map(label => 
-                                `<span style="background-color: #${label.color}; color: white; padding: 2px 6px; border-radius: 3px; margin-right: 4px; font-size: 12px;">${label.title}</span>`
-                            ).join('');
-                            labelsHtml += '</p>';
-                        }
-						
-                        return `
-                            <div class="details-container">
-                                <h5>${task.name}</h5>
-                                <p><strong>Stack:</strong> ${task.stack}</p>
-                                <p><strong>Start:</strong> ${startDateStr}</p>
-                                <p><strong>Fälligkeit:</strong> ${endDateStr}</p>
-                                <p><strong>Fortschritt:</strong> ${task.progress}%</p>
-                                ${task.overdue ? '<p style="color: red;"><strong>Überfällig!</strong></p>' : ''}
-                                ${labelsHtml}
-                                ${descPreview ? '<p><strong>Beschreibung:</strong> ${descPreview}...</p>' : ''}
-                            </div>
-                        `;
-                    }, 
-					// <-- */
-					
+											
                     on_date_change: async function(task, start, end) {
 						console.log("on_date_change...");
                         try {
@@ -475,7 +586,7 @@
                             
 							if (doneFieldChanged) {
 								task.name = createTaskName(card);
-								ganttChart.refresh(tasks);
+								ganttChart.refresh(tasks);  // frappe-gantt
 								ganttHeightManager.fixGanttHeight();
 							}
                             
@@ -547,6 +658,7 @@
 			taskName +=  `</tspan>`;
 			return taskName;
 		}
+	// <-----
 
 		// handle Dates and Progress fields ---->
         function parseDateProgressFromDescription(description) {
@@ -1295,7 +1407,7 @@
 		function onPopupClose() {
 			//console.log('Run something after popup closes!', checkbox_changed);
 			if (checkbox_changed) {
-				createGanttChart(); // is more reactive for checkbox changes, but not yet working for md text changes, because the md text ist not updated in the baordData
+				createGanttChart(); // frappe-gantt // is more reactive for checkbox changes, but not yet working for md text changes, because the md text ist not updated in the baordData
 				checkbox_changed = false;
 			}
 		}
@@ -1346,7 +1458,7 @@
 				
 				// get card data
 				const taskIndex = htmlBox.id.split('_')[1];
-				const task = ganttChart.tasks[taskIndex];
+				const task = ganttChart.tasks[taskIndex];  // frappe gantt
 				const stackIndex = task2stackCardIndex[taskIndex].stack;
 				const cardIndex   = task2stackCardIndex[taskIndex].card;
 				const card = boardData.stacks[stackIndex].cards[cardIndex];
@@ -1366,7 +1478,7 @@
 		// <---
 
 	
-    // <!-- Cookie section -->
+    // Cookie section ----->
         let isFormVisible = true;
 		
         // Cookie functions
@@ -1438,16 +1550,21 @@
             event.preventDefault();
             
             // Save form data to cookies
-            const formData = new FormData(event.target);
-		    setCookie('username', formData.get('username'));
-            setCookie('url', formData.get('url'));
-            setCookie('token', formData.get('token'));
+			if (document.getElementById('storeCookies').checked) {
+				const formData = new FormData(event.target);
+				setCookie('username', formData.get('username'));
+				setCookie('url', formData.get('url'));
+				setCookie('token', formData.get('token'));
+			}
+			else {
+				console.log("Cookies not accepted");
+			}
             
 			fetchBoards();
         }
+	// <-----
 
-		// <!-- Gantt Chart Hight Auto Adjustment -->
-	
+	//Gantt Chart Hight Auto Adjustment ----->
 		// Enhanced version with manual recreation handling
 		class GanttHeightManager {
 			constructor() {
@@ -1611,3 +1728,4 @@
 
 		// Export for use in console
 		window.ganttHeightManager = ganttHeightManager;
+	// <---
