@@ -64,9 +64,9 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 				</div>
 			</div>
 			
+			<div id="status"></div> <!-- status messages -->
 			<div> <button id="boardExportBtn">Export board</button></div>
 			<div> <button id="boardImportBtn">Import board</button></div>
-			<div id="status"></div> <!-- status messages -->
 		</div>
         <div id="gantt-container"></div>
     </div>
