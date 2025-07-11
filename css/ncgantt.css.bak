@@ -14,7 +14,7 @@
 			min-width: 150px;
 		}
 		#importExportSelect {
-			width: 57px;
+			width: 50px;
 		}
 		#boardSelect, #importExportSelect, #boardExportBtn, #boardImportBtn {
 			height: 22px;
@@ -41,7 +41,7 @@
 			flex-wrap: wrap; /* allows wrapping only when space runs out */
 		}
 
-        .board-selection {
+        .status-field {
 			display: flex;
 			align-items: center;
 			gap: 5px;
@@ -105,9 +105,8 @@
         
         .stack-colors {
             margin-top: 5px;
-			margin-left: 3px;
             display: flex;
-            column-gap: 10px;
+            column-gap: 15px;
             flex-wrap: wrap;
         }
         
@@ -221,48 +220,37 @@
 		/* Html-MD-Toggle */
 		.html-md-icon-toggle {
 			position: absolute;
-			top: 4px;
-			right: 7px;
+			top: 3px;
+			right: 1px;
 			cursor: pointer;
 			font-size: 18px;
 			user-select: none;
 			background-image: unset; /* needed for nextcloud integration */
 			background-color: white;
-			padding: 1px 2px;
+			padding: 0px 3px;
 		}
 		.html_box {
 			min-height: 1px;
 		}
 		.popup-close-button {
 			position: absolute;
-			top: 10px;
-			right: 17px;
+			top: 8px;
+			right: 12px;
 			font-size: 28px;
 			cursor: pointer;
 		}
-		#toggleBtn img {
-			height: 0.9rem;
-		}
-		#toggleBtn2 img {
-			height: 1.1rem;
+		#toggleBtn {
+			transform: scale(-1, 1);
 		}
 		
 		/* Mobile tweeking */
 		@media (max-width: 768px) {
-			#status {
-				display: none;
-			}
-
-			.gannt_container {
-				padding: 0px;
-			}
-			
 			.gantt-container .popup-wrapper {
 				position: fixed !important;
-				top: 52px !important;
-				left: 5px !important;
+				top: 0 !important;
+				left: 0 !important;
 				width: 92vw !important;
-				height: 90vh !important;
+				height: 96vh !important;
 				background-color: white !important;
 				z-index: 9999 !important;
 				overflow: auto !important;
@@ -277,22 +265,12 @@
 			.gantt-container .popup-wrapper:before {
 				content: "Task Details";
 				display: block;
-				font-size: 1.2rem;
+				font-size: 1.3em;
 				margin-bottom: 10px;
 				font-weight: bold;
 			}
 			.gantt-container .popup-wrapper .title {
 				margin-top: 17px;
-				font-size: 1rem;
-			}
-			.gantt-container .popup-wrapper .subtitle {
-				font-size: 1rem;
-			}
-			.gantt-container .popup-wrapper .details {
-				font-size: 0.9rem;
-			}
-			.html_box {
-				line-height: 1.1;
 			}
 		}
 		@media (max-width: 550px) {

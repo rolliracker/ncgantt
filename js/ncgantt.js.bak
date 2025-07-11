@@ -34,14 +34,10 @@
 		// monitor network state
 		let isOnline = window.navigator.onLine;
 		let networError = false;
-		
-		let edit_symbol = '<img src="img/pencil2.svg">';
-		let confirm_symbol = '<img src="img/check-square-outlined.svg">';
 	// <---
 	
 	// Nextcloud section --->
 		function isInsideNextcloud() {
-
 			// Check for OC/OCA globals
 			if (typeof OC !== 'undefined' || typeof OCA !== 'undefined') {
 				return true;
@@ -58,12 +54,11 @@
 		}	
 		const isNextcloud = isInsideNextcloud()
 		function setupEnvironment(nextcloud) {
+			
+			
 			if (nextcloud) {  	// hide settings when in Nextcloud
 				let el = document.getElementById('settingsContainer');
 				el.classList.add("hidden");
-				
-				edit_symbol = '<img src="../../custom_apps/ncgantt/img/pencil2.svg">';
-				confirm_symbol = '<img src="../../custom_apps/ncgantt/img/check-square-outlined.svg">';
 				
 			} else {			// show settings when outside of Nextcloud
 				let el = document.getElementById('settingsContainer');
@@ -964,7 +959,7 @@
 			}
 			
 			if (card.id in pendingCardUpdates) {
-				taskName +=  ` <tspan dy='-2' fill='#9b9b9b' font-size='18px' font-weight='bold'>&#x21BB;</tspan>`;  // &#128472; &#x1F5D8;
+				taskName +=  ` <tspan dy='2' fill='#9b9b9b' font-size='18px' font-weight='bold'>&#x21BB;</tspan>`;  // &#128472; &#x1F5D8;
 			}
 			taskName +=  `</tspan>`;
 			return taskName;
@@ -1506,15 +1501,13 @@
 			html = `
 					<div class="html_box" id="${parent_id}"><span>
 						${html}</span>
-						<span class="html-md-icon-toggle" id="toggleBtn">${edit_symbol}</span>
+						<span class="html-md-icon-toggle" id="toggleBtn">&#9998;</span>
 					</div>
 					<div class="md_box hide">
 						<textarea class="md_textarea">${markdown}</textarea>
-						<span class="html-md-icon-toggle" id="toggleBtn2">${confirm_symbol}</span>
+						<span class="html-md-icon-toggle" id="toggleBtn2">&#x2611;</span>
 					</div>
 					`;
-					// pen &#9998;
-					// check &#x2611;
 						//<textarea class="md_textarea" rows="${md_rows}" cols="${md_cols}">${markdown}</textarea>
 
 			html = html.replace(/^<br\s*\/?>/, '');  // Remove <br> only if it's at the start
@@ -1529,7 +1522,7 @@
 			html = html.replaceAll('<br><br>', '<br>');
 				
 			html = `
-					<div class="popup-close-button">&times;</div>
+					<div class="popup-close-button" onclick="onPopupCloseClicked()">&times;</div>
 					<div id="htmlOutput">` 
 					+ html +
 					`</div>`;
@@ -1793,7 +1786,7 @@
 
 		function autoResizeHight(el) {
 			el.style.height = 'auto'; // Reset
-			el.style.height = el.scrollHeight + 4 + 'px'; // Resize to fit content (+2 to be sure)
+			el.style.height = el.scrollHeight + 'px'; // Resize to fit content
 		}
 		function setUpHtmlMdToggle() {
 			console.log("setUpHtmlMdToggle...");
@@ -1802,7 +1795,6 @@
 			toggleBtn = document.getElementById('toggleBtn');
 			toggleBtn2 = document.getElementById('toggleBtn2');
 			const textarea = mdBox.getElementsByTagName('textarea')[0];
-			const closeBtn = document.querySelector('.popup-close-button');
 
 			// toggle to md view
 			toggleBtn.addEventListener('click', () => {
@@ -1838,8 +1830,6 @@
 			
 			textarea.addEventListener('input', () => autoResizeHight(textarea));
 			//const timeout = setTimeout(() => {autoResizeHight(textarea);}, 1000);  // execute at beginning
-			
-			closeBtn.addEventListener('click', () => onPopupCloseClicked());
 		}
 
 		function onMd2HtmlToggle() {

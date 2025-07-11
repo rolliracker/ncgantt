@@ -48,7 +48,8 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 						<input type="password" id="token" name="token" placeholder="xxxxx-xxxxx-xxxxx-xxxxx-xxxxx">
 					</div>
 					
-					<button type='submit' id="loadBoardsBtn">Load boards</button>
+					<button type='submit' id="loadBoardsBtn">Load boards</button> 
+					<input type="checkbox" id="storeCookies" style="width:unset;"> Use cookie to store credentials (so you don't have to enter them again) </input>
 				</form>
 				</div>
 			</div>
@@ -59,13 +60,22 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 				<div class="status-field">
 					<label for="boardSelect">Board:</label>
 					<select id="boardSelect">
-						<option value=""> </option>
+						<option value="" disabled hidden> </option>
 					</select>
 				</div>
 			</div>
 			
-			<div> <button id="boardExportBtn">Export board</button></div>
-			<div> <button id="boardImportBtn">Import board</button></div>
+			<span class="import-export-select">
+					<select id="importExportSelect">
+						<option value="" disabled selected hidden>...</option>
+						<option value="export">Export board</option>
+						<option value="import">Import board</option>
+					</select>
+			</span>
+			<span class="import-export-buttons">
+				<span><button id="boardExportBtn">Export board</button></span>
+				<span><button id="boardImportBtn">Import board</button></span>
+			</span>
 			<div id="status"></div> <!-- status messages -->
 		</div>
         <div id="gantt-container"></div>

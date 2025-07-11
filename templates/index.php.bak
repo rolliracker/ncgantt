@@ -63,10 +63,11 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 					</select>
 				</div>
 			</div>
-			
-			<div id="status"></div> <!-- status messages -->
+			<span span="nobreak">
 			<div> <button id="boardExportBtn">Export board</button></div>
 			<div> <button id="boardImportBtn">Import board</button></div>
+			</span>
+			<div id="status"></div> <!-- status messages -->
 		</div>
         <div id="gantt-container"></div>
     </div>
