@@ -158,6 +158,9 @@
             position: relative;
             padding-left: 1.8em;
         }
+        #htmlOutput ul {
+            list-style: initial;
+        }
         
         /* Style checkboxes to allow proper text alignment */
         #htmlOutput input[type="checkbox"] {
@@ -210,12 +213,31 @@
 			margin-top: 0px;
 		}
 		.gantt-container .popup-wrapper { 
-			max-width: 300px;
-			min-width: 300px;
+			max-width: 350px;
+			min-width: 350px;
+			border-radius: 8px;
 		}
 		.gantt-container .popup-wrapper .title {
 			width: 90%;
 			line-height: 1.3;
+			font-size: 0.9rem;
+		}
+		.gantt-container .popup-wrapper .subtitle {
+			font-size: 0.9rem;
+		}
+		.gantt-container .popup-wrapper .details {
+			font-size: 0.85rem;
+		}
+		.gantt-container .popup-wrapper hr  {
+			border: 1px solid #e9e9e9; 
+		}
+		.gantt-container .popup-wrapper .popup-top-line  {
+			margin-top: 10px; 
+			margin-bottom: 15px;
+		}
+		.gantt-container .popup-wrapper .popup-bottom-line  { 
+			margin-top: 15px; 
+			margin-bottom: 6px;
 		}
 		
 		/* Html-MD-Toggle */
@@ -224,20 +246,26 @@
 			top: 4px;
 			right: 7px;
 			cursor: pointer;
-			font-size: 18px;
 			user-select: none;
 			background-image: unset; /* needed for nextcloud integration */
 			background-color: white;
 			padding: 1px 2px;
+			cursor: pointer;
 		}
 		.html_box {
 			min-height: 1px;
 		}
 		.popup-close-button {
 			position: absolute;
-			top: 10px;
-			right: 17px;
-			font-size: 28px;
+			top: 13px;
+			right: 21px;
+			cursor: pointer;
+		}
+		.popup-close-button img {
+			height: 0.8rem;
+			cursor: pointer;
+		}
+		#toggleBtn img, #toggleBtn2 img {
 			cursor: pointer;
 		}
 		#toggleBtn img {
@@ -267,7 +295,7 @@
 				z-index: 9999 !important;
 				overflow: auto !important;
 				padding: 15px;
-				margin: 8px;
+				margin: 9px;
 				border-radius: 8px;
 				box-sizing: border-box;
 				max-width: none;

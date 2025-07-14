@@ -1,8 +1,14 @@
 <?php
+// Frappe Gantt
 script('ncgantt', '../frappe-gantt/1.0.3/dist/frappe-gantt.umd'); // This loads frappe-gantt.umd.js
 style('ncgantt', '../frappe-gantt/1.0.3/dist/frappe-gantt');      // This loads frappe-gantt.css
 
-script('ncgantt', 'ncgantt');  // This loads js/gantt.js
+// DOMPurify
+style('ncgantt', 'DOMPurify-3.2.6/dist/purify.min.js');      // This loads frappe-gantt.css
+
+// NcGantt
+script('ncgantt', 'nxgantt_GanttHeightManager');  // This loads js/gantt.js
+script('ncgantt', 'ncgantt_NCGantt');  // This loads js/gantt.js
 style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 ?> 
 	<!--
