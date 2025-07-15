@@ -247,6 +247,10 @@
         margin-top: 15px;
         margin-bottom: 6px;
     }
+	
+	.gantt .bar-label tspan {
+		pointer-events: none;
+	}
 
     /* HTML-MD Toggle */
     .html-md-icon-toggle,
