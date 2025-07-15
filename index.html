@@ -97,6 +97,28 @@
             border-radius: 4px;
             font-size: 14px;
         }
+		
+		/* Buttons */
+		#loadBoardsBtn {
+			background: #305e92;
+			color: white;
+			border: none;
+			padding: 3px 80px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			margin-top: 10px;
+		}
+
+		#loadBoardsBtn:hover {
+			background: #006aa3;
+		}
+
+		#loadBoardsBtn:disabled {
+			background: #ccc;
+			cursor: not-allowed;
+		}
+
 				
 		@media (max-width: 768px) {
 			#status {
@@ -108,7 +130,7 @@
 
 </head>
 <body>
-	<div id="app">  
+	<div class="app-ncgantt" id="appNcgantt">  
         <div class="settings-container hidden" id="settingsContainer">
 			<div class="settings-header" id="settingsHeader">
 				<h3>&#9881; Connection settings</h3>
@@ -117,7 +139,7 @@
 			
 			<div class="settings-form" id="settingsForm">
 				<div class="form-content">
-				<form id="settings-form">
+				<form id="settings-form" method="dialog">
 					<div class="form-group">
 						<label for="url">Nextcloud URL:</label>
 						<input type="url" id="url" name="url" placeholder="https://your-nextcloud.org">
@@ -142,21 +164,21 @@
 		<div class="status-section">
 			<div class="board-selection" id="boardSelection" style="display: flex; margin-top: 0px;">
 					<label for="boardSelect">Board:</label>
-					<select id="boardSelect">
+					<select class="board-select" id="boardSelect">
 						<option value="" disabled hidden> </option>
 					</select>
 			</div>
 			
 			<span class="import-export-select">
-					<select id="importExportSelect">
+					<select class="import-export-select" id="importExportSelect">
 						<option value="" disabled selected hidden>...</option>
 						<option value="export">Export board</option>
 						<option value="import">Import board</option>
 					</select>
 			</span>
 			<span class="import-export-buttons">
-				<span><button id="boardExportBtn">Export board</button></span>
-				<span><button id="boardImportBtn">Import board</button></span>
+				<span><button class="import-export-btn" id="boardExportBtn">Export board</button></span>
+				<span><button class="import-export-btn" id="boardImportBtn">Import board</button></span>
 			</span>
 			<div id="status"></div> <!-- status messages -->
 		</div>

@@ -1,8 +1,8 @@
 "use strict";
 
-// NCGantt
+// NCGantt - Nextcloud Gantt Chart App
 /*
-User-controlled input
+User-controlled input sources:
 	card.title
 	card.description
 	label.title
@@ -60,8 +60,8 @@ class NCGantt {
             popup_element: null,
             htmlBox: null,
             mdBox: null,
-            toggleBtn: null,
-            toggleBtn2: null
+            htmlMdIconToggle: null,
+            mdHtmlIconToggle: null
         };
 
         // Resource management
@@ -159,9 +159,31 @@ class NCGantt {
         return false;
     }
 
+    // Helper to get element within app scope
+    getElement(selector) {
+        const appContainer = document.querySelector('.app-ncgantt');
+        if (appContainer) {
+            return appContainer.querySelector(selector);
+        }
+        // Fallback for elements that might be outside the container
+        return document.querySelector(selector);
+    }
+
+    // Helper to get all elements within app scope
+    getAllElements(selector) {
+        const appContainer = document.querySelector('.app-ncgantt');
+        if (appContainer) {
+            return appContainer.querySelectorAll(selector);
+        }
+        // Fallback for elements that might be outside the container
+        return document.querySelectorAll(selector);
+    }
+
     // Environment setup
     setupEnvironment() {
-        const el = document.getElementById('settingsContainer');
+        const el = this.getElement('#settingsContainer');
+        if (!el) return;
+        
         if (this.config.isNextcloud) {
             el.classList.add("hidden");
             this.symbols.edit =    '<img src="../../custom_apps/ncgantt/img/pencil2.svg">';
@@ -183,21 +205,21 @@ class NCGantt {
     async setupEventListeners() {
         // Settings
         this.addEventListener(
-            document.getElementById('settingsHeader'),
+            this.getElement('#settingsHeader'),
             'click',
             () => this.toggleSettings()
         );
 
 		// settingsForm
         this.addEventListener(
-            document.getElementById('settingsForm'),
+            this.getElement('#settingsForm'),
             'submit',
             (e) => this.handleSubmit(e)
         );
 
         // Board selection
         this.addEventListener(
-            document.getElementById('boardSelect'),
+            this.getElement('#boardSelect'),
             'change',
             () => this.fetchBoardData()
         );
@@ -215,20 +237,20 @@ class NCGantt {
 
         // boardExportBtn
         this.addEventListener(
-            document.getElementById('boardExportBtn'),
+            this.getElement('#boardExportBtn'),
             'click',
             () => this.exportBoard()
         );
 
 		// boardImportBtn
         this.addEventListener(
-            document.getElementById('boardImportBtn'),
+            this.getElement('#boardImportBtn'),
             'click',
             () => this.importBoardFromFile()
         );
 
         // Import/Export select
-        const select = document.getElementById('importExportSelect');
+        const select = this.getElement('#importExportSelect');
         this.addEventListener(select, 'change', () => {
             switch(select.value) {
                 case "export":
@@ -256,7 +278,7 @@ class NCGantt {
 
     // Status display methods
     showStatus(message, type = 'info') {
-        const statusEl = document.getElementById('status');
+        const statusEl = this.getElement('#status');
         if (statusEl) {
             statusEl.className = type;
             statusEl.textContent = message;
@@ -315,9 +337,9 @@ class NCGantt {
                     }
                 };
             } else {
-                const url = document.getElementById('url').value.trim();
-                const username = document.getElementById('username').value.trim();
-                const token = document.getElementById('token').value.trim();
+                const url = this.getElement('#url').value.trim();
+                const username = this.getElement('#username').value.trim();
+                const token = this.getElement('#token').value.trim();
                 
                 if (!url || !username || !token) {
                     throw new Error('Please enter all settings');
@@ -363,8 +385,8 @@ class NCGantt {
 
     // Board management
     async fetchBoards() {
-        const btn = document.getElementById('loadBoardsBtn');
-        btn.disabled = true;
+        const btn = this.getElement('#loadBoardsBtn');
+        if (btn) btn.disabled = true;
         this.toggleSettings('close');
         this.showStatus('Loading boards...', 'loading');
         console.log('Loading boards...');
@@ -372,7 +394,7 @@ class NCGantt {
         try {
             this.state.boards = await this.makeApiCall('/boards');
             
-            const select = document.getElementById('boardSelect');
+            const select = this.getElement('#boardSelect');
             select.innerHTML = '<option value="" hidden>-- please select --</option>';
             
             let boards_count = 0;
@@ -386,7 +408,8 @@ class NCGantt {
                 }
             });
             
-            document.getElementById('boardSelection').style.display = 'block';
+            const boardSelection = this.getElement('#boardSelection');
+            if (boardSelection) boardSelection.style.display = 'block';
             this.showSuccess(`${boards_count} Board(s) found`);
             
             this.toggleSettings('close');
@@ -398,7 +421,7 @@ class NCGantt {
             this.toggleSettings('open');
             console.log("...Loading boards failed!");
         } finally {
-            btn.disabled = false;
+            if (btn) btn.disabled = false;
         }
     }
 
@@ -406,7 +429,8 @@ class NCGantt {
         console.log("fetchBoardData...");
         this.showStatus('Fetch board data...', 'loading');
 
-        const boardId = document.getElementById('boardSelect').value;
+        const boardSelect = this.getElement('#boardSelect');
+        const boardId = boardSelect ? boardSelect.value : null;
         if (!boardId) return;
         
         try {
@@ -416,8 +440,6 @@ class NCGantt {
             const completeStacksData = await this.makeApiCall(`/boards/${boardId}/stacks`);
             this.state.boardData.stacks = completeStacksData;
 			
-			
-            
             // Sort stacks
             this.sortStacks();
             
@@ -586,7 +608,8 @@ class NCGantt {
         try {
             const boardId = await this.importDeckBoard(importedBoardData);
             await this.fetchBoards();
-            document.getElementById('boardSelect').value = boardId;
+            const boardSelect = this.getElement('#boardSelect');
+            if (boardSelect) boardSelect.value = boardId;
         } catch (error) {
             this.showError(error.message);
             throw error;
@@ -826,30 +849,6 @@ class NCGantt {
 	sanitizeHtml(html) {
 		// Option 1: Use DOMPurify (recommended)
 		if (typeof DOMPurify !== 'undefined') {
-/* 			const options = {
-				// Allow text and tspan (SVG text elements)
-    			ALLOWED_TAGS: [
-					'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'input', 'hr', 
-					'text', 'tspan'
-				],
-	
-				// Allow the SVG attributes you're using
-				ALLOWED_ATTR: {
-					'input': ['type', 'checked', 'disabled', 'class', 'id'],
-					'tspan': ['dy', 'fill', 'font-weight', 'font-size']
-				},
-			   
-				// Important: Keep the text content
-				KEEP_CONTENT: true,
-				
-				// Allow SVG namespace
-				ADD_TAGS: ['svg'],
-				
-				// Prevent wrapping in body/html tags
-				RETURN_DOM_FRAGMENT: false,
-				RETURN_DOM: false
-			};
- */			//const sanitized_html = DOMPurify.sanitize(html, options);
 			const sanitized_html = DOMPurify.sanitize(html);
 			return sanitized_html;
 		}
@@ -935,7 +934,8 @@ class NCGantt {
         });
         
         // Prepare container
-        const container = document.getElementById('gantt-container');
+        const container = this.getElement('#gantt-container');
+        if (!container) return;
         container.innerHTML = '<svg id="gantt"></svg>';
         
         if (tasks.length === 0) {
@@ -967,7 +967,7 @@ class NCGantt {
                 });
                 
                 const popup = document.querySelector('.popup-wrapper');
-                popup.classList.add("hide");
+                if (popup) popup.classList.add("hide");
                 
                 this.showSuccess(`Created Gantt chart with ${tasks.length} cards`);
             } catch (error) {
@@ -1137,7 +1137,9 @@ class NCGantt {
     displayStackColors() {
         if (!this.state.boardData.stacks.length) return;
         
-        const container = document.getElementById('gantt-container');
+        const container = this.getElement('#gantt-container');
+        if (!container) return;
+        
         const colorDiv = document.createElement('div');
         colorDiv.className = 'stack-colors';
         
@@ -1146,24 +1148,28 @@ class NCGantt {
         listTitle.textContent = 'Lists:';
         colorDiv.appendChild(listTitle);
 
-
         this.state.boardData.stacks.forEach(stack => {
 			
             const indicator = document.createElement('div');
             indicator.className = 'stack-indicator';
+			
+			// add color box
+			const colorBox = document.createElement('div');
+			colorBox.className = "color-box";
+			colorBox.style.backgroundColor = this.stackColors[stack.id];
+			indicator.appendChild(colorBox);
+			
+			// add stack title
+			const stackTitle = document.createElement('span');
 			// Ensure user input is escaped for innerHTML
-            indicator.innerHTML = this.createSafeHtml_StackColors(stack);
+			const safe_stackTitle = this.escapeHtml(stack.title);
+			stackTitle.textContent = safe_stackTitle;
+			indicator.appendChild(stackTitle);
+			
             colorDiv.appendChild(indicator);
         });
         container.appendChild(colorDiv);
     }
-	createSafeHtml_StackColors(stack) {
-		// Escape user input
-		const safe_stackTitle = this.escapeHtml(stack.title);
-		return `
-			<div class="color-box" style="background-color: ${this.stackColors[stack.id]}"></div>
-			<span>${safe_stackTitle}</span>`;
-	}
 
     displayLabels() {
         // Collect all unique labels
@@ -1181,7 +1187,9 @@ class NCGantt {
         });
         
         if (allLabels.size > 0) {
-            const container = document.getElementById('gantt-container');
+            const container = this.getElement('#gantt-container');
+            if (!container) return;
+            
             const labelSection = document.createElement('div');
             labelSection.className = 'labels-section';
             
@@ -1196,8 +1204,20 @@ class NCGantt {
             allLabels.forEach(label => {
                 const indicator = document.createElement('span');
                 indicator.className = 'stack-indicator';
-                indicator.innerHTML = this.createSafeHtml_LabelColors(label);
-                
+				
+				// add color box
+				const colorBox = document.createElement('div');
+				colorBox.className = "color-box";
+				colorBox.style.backgroundColor = `#${label.color}`;
+				indicator.appendChild(colorBox);
+				
+				// add stack title
+				const stackTitle = document.createElement('span');
+				// Ensure user input is escaped for innerHTML
+				const safe_labelTitle = this.escapeHtml(label.title);
+				stackTitle.textContent = safe_labelTitle;
+				indicator.appendChild(stackTitle);
+				  
                 // Event listener for filter by label
                 indicator.onclick = () => {
                     if (this.cardFilter.labels.includes(label.title)) {
@@ -1237,13 +1257,6 @@ class NCGantt {
             container.appendChild(labelSection);
         }
     }
-	createSafeHtml_LabelColors(label) {
-		// Escape user input
-		const safe_labelTitle = this.escapeHtml(label.title);
-		return `
-			<div class="color-box" style="background-color: #${label.color}"></div>
-			<span>${safe_labelTitle}</span>`;
-	}
 
     // Date and Progress field handling
     parseDateProgressFromDescription(description) {
@@ -1643,11 +1656,11 @@ class NCGantt {
         html = `
             <div class="html_box" id="${parent_id}"><span>
                 ${html}</span>
-                <span class="html-md-icon-toggle" id="toggleBtn">${this.symbols.edit}</span>
+                <span class="html-md-icon-toggle">${this.symbols.edit}</span>
             </div>
             <div class="md_box hide">
                 <textarea class="md_textarea"></textarea>
-                <span class="html-md-icon-toggle" id="toggleBtn2">${this.symbols.confirm}</span>
+                <span class="md-html-icon-toggle">${this.symbols.confirm}</span>
             </div>
         `;
 
@@ -1662,7 +1675,7 @@ class NCGantt {
 
         html = `
             <div class="popup-close-button">${this.symbols.close}</div>
-            <div id="htmlOutput">` 
+            <div class="htmlOutput">` 
             + html +
             `</div>`;
         
@@ -1751,7 +1764,7 @@ class NCGantt {
     }
 
     startUpdateEventListener() {
-        const ganttElement = document.querySelector('.gantt');
+        const ganttElement = document.querySelector('.app-ncgantt .gantt');
         if (ganttElement) {
             this.addEventListener(ganttElement, 'mousedown', () => this.startInteraction());
             this.addEventListener(window, 'mouseup', () => this.stopInteraction());
@@ -1769,7 +1782,8 @@ class NCGantt {
             // Send pending card changes first
             await this.sendPendingCardData();
             
-            const boardId = document.getElementById('boardSelect').value;
+            const boardSelect = this.getElement('#boardSelect');
+            const boardId = boardSelect ? boardSelect.value : null;
             if (!boardId) {
                 return;
             }
@@ -1932,16 +1946,17 @@ class NCGantt {
         console.log("setUpHtmlMdToggle...");
         this.elements.htmlBox = document.querySelector('.html_box');
         this.elements.mdBox = document.querySelector('.md_box');
-        this.elements.toggleBtn = document.getElementById('toggleBtn');
-        this.elements.toggleBtn2 = document.getElementById('toggleBtn2');
+        this.elements.htmlMdIconToggle = document.querySelector('.html-md-icon-toggle');
+        this.elements.mdHtmlIconToggle = document.querySelector('.md-html-icon-toggle');
 		
+
         if (!this.elements.mdBox || !this.elements.htmlBox) return;
         
         const textarea = this.elements.mdBox.getElementsByTagName('textarea')[0];
         const closeBtn = document.querySelector('.popup-close-button');
 
         // Toggle to md view
-        this.elements.toggleBtn.addEventListener('click', () => {
+        this.elements.htmlMdIconToggle.addEventListener('click', () => {
             this.elements.htmlBox.classList.add('hide');
             this.elements.mdBox.classList.remove('hide');
 			this.onHtml2MdToggle();
@@ -1959,7 +1974,7 @@ class NCGantt {
         });
 
         // Toggle to html view
-        this.elements.toggleBtn2.addEventListener('click', () => {
+        this.elements.mdHtmlIconToggle.addEventListener('click', () => {
             this.elements.mdBox.classList.add('hide');
             this.elements.htmlBox.classList.remove('hide');
             this.onMd2HtmlToggle();
@@ -2047,14 +2062,18 @@ class NCGantt {
         const savedUrl = this.getCookie('url');
         const savedToken = this.getCookie('token');
         
-        if (savedUsername) {
-            document.getElementById('username').value = savedUsername;
+        const usernameEl = this.getElement('#username');
+        const urlEl = this.getElement('#url');
+        const tokenEl = this.getElement('#token');
+        
+        if (savedUsername && usernameEl) {
+            usernameEl.value = savedUsername;
         }
-        if (savedUrl) {
-            document.getElementById('url').value = savedUrl;
+        if (savedUrl && urlEl) {
+            urlEl.value = savedUrl;
         }
-        if (savedToken) {
-            document.getElementById('token').value = savedToken;
+        if (savedToken && tokenEl) {
+            tokenEl.value = savedToken;
         }
         
         return !!(savedUsername && savedUrl && savedToken);
@@ -2068,8 +2087,10 @@ class NCGantt {
     }
 
     toggleSettings(enforceAction = null) {
-        const form = document.getElementById('settingsForm');
-        const arrow = document.getElementById('arrow');
+        const form = this.getElement('#settingsForm');
+        const arrow = this.getElement('#arrow');
+        
+        if (!form || !arrow) return;
         
         switch(enforceAction) {
             case 'open':
@@ -2095,7 +2116,8 @@ class NCGantt {
         event.preventDefault();
         
         // Save to cookies if checked
-        if (document.getElementById('storeCookies').checked) {
+        const storeCookiesEl = this.getElement('#storeCookies');
+        if (storeCookiesEl && storeCookiesEl.checked) {
             const formData = new FormData(event.target);
             this.setCookie('username', formData.get('username'));
             this.setCookie('url', formData.get('url'));

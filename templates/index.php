@@ -4,7 +4,7 @@ script('ncgantt', '../frappe-gantt/1.0.3/dist/frappe-gantt.umd'); // This loads 
 style('ncgantt', '../frappe-gantt/1.0.3/dist/frappe-gantt');      // This loads frappe-gantt.css
 
 // DOMPurify
-style('ncgantt', 'DOMPurify-3.2.6/dist/purify.min.js');      // This loads frappe-gantt.css
+script('ncgantt', 'DOMPurify-3.2.6/dist/purify.min');      // This loads frappe-gantt.css
 
 // NcGantt
 script('ncgantt', 'nxgantt_GanttHeightManager');  // This loads js/gantt.js
@@ -24,21 +24,19 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
         <h2>Gantt Chart</h2>
     </div>
 	-->
-
-    <div id="app-content">
-
+    <div class="app-ncgantt" id="app-content">
     <div class="gannt_container" id="ganntContainer">
         <!-- <h1>Nextcloud Deck Gantt Chart Viewer</h1> -->
         
         <div class="settings-container hidden" id="settingsContainer">
 			<div class="settings-header" id="settingsHeader">
-				<h3>⚙️ Connection settings</h3>
-				<span class="dropdown-arrow" id="arrow">▼</span>
+				<h3>&#9881; Connection settings</h3>
+				<span class="dropdown-arrow" id="arrow">&#9660;</span>
 			</div>
 			
 			<div class="settings-form" id="settingsForm">
 				<div class="form-content">
-				<form id="settings-form">
+				<form id="settings-form" method="dialog">
 					<div class="form-group">
 						<label for="url">Nextcloud URL:</label>
 						<input type="url" id="url" name="url" placeholder="https://your-nextcloud.org">
@@ -58,29 +56,26 @@ style('ncgantt', 'ncgantt');   // This loads css/gantt.css
 					<input type="checkbox" id="storeCookies" style="width:unset;"> Use cookie to store credentials (so you don't have to enter them again) </input>
 				</form>
 				</div>
-			</div>
-            
-         </div>
+			</div>    
+        </div>
 		<div class="status-section">
-			<div id="boardSelection" style="display: flex; margin-top: 0px;">
-				<div class="status-field">
+			<div class="board-selection" id="boardSelection" style="display: flex; margin-top: 0px;">
 					<label for="boardSelect">Board:</label>
-					<select id="boardSelect">
+					<select class="board-select" id="boardSelect">
 						<option value="" disabled hidden> </option>
 					</select>
-				</div>
 			</div>
 			
 			<span class="import-export-select">
-					<select id="importExportSelect">
+					<select class="import-export-select" id="importExportSelect">
 						<option value="" disabled selected hidden>...</option>
 						<option value="export">Export board</option>
 						<option value="import">Import board</option>
 					</select>
 			</span>
 			<span class="import-export-buttons">
-				<span><button id="boardExportBtn">Export board</button></span>
-				<span><button id="boardImportBtn">Import board</button></span>
+				<span><button class="import-export-btn" id="boardExportBtn">Export board</button></span>
+				<span><button class="import-export-btn" id="boardImportBtn">Import board</button></span>
 			</span>
 			<div id="status"></div> <!-- status messages -->
 		</div>
