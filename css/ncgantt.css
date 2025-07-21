@@ -30,7 +30,7 @@
         cursor: pointer;
     }
 
-    .import-export-select {
+    .import-export-selection {
         display: none;
     }
 
@@ -251,7 +251,6 @@
 	.gantt .bar-label tspan {
 		pointer-events: none;
 	}
-
     /* HTML-MD Toggle */
     .html-md-icon-toggle,
 	.md-html-icon-toggle {
@@ -318,6 +317,7 @@
             border-radius: 8px;
             box-sizing: border-box;
             max-width: none;
+			min-width: unset;
             box-shadow: 0px 0px 127px #0000009c;
         }
 
@@ -342,14 +342,36 @@
             font-size: 0.9rem;
         }
 
-        .html_box {
+        .gantt-container .html_box {
             line-height: 1.1;
-        }
+			padding-top: 1px;
+		}
+		
+		.gantt-container .md_textarea {
+			padding-top: 7px;
+		}
+		
+		.htmlOutput input[type="checkbox"] {
+			margin-top: 2px;
+		}
+		
+		.popup-close-button img {
+			height: 1rem;
+		}
     }
 
     @media (max-width: 550px) {
-        .import-export-select {
+        .import-export-selection {
             display: unset;
+		}
+        .import-export-select {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			background: transparent; 
+			border: none;
+			font-size: 1.3rem;
+			width: 1.5em;
         }
 
         .import-export-buttons {
@@ -375,7 +397,7 @@
         .status-section,
         .settings-container,
         .import-export-buttons,
-        .import-export-select {
+        .import-export-selection {
             display: none !important;
         }
 

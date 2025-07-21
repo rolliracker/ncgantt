@@ -75,7 +75,7 @@ class NCGantt {
 
         // Symbols
         this.symbols = {
-            edit:    '<img src="img/pencil2.svg">',
+            edit:    '<img src="img/pencil.svg">',
             confirm: '<img src="img/check-square-outlined.svg">',
 			close:   '<img src="img/close-outlined-cross.svg">'
         };
