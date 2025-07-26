@@ -6,6 +6,9 @@ A Nextcloud app that views and updates Deck boards in a Gantt chart.
 This App is under development - use it at your own risk.
 
 
+It uses the [frappe-gantt library](https://github.com/frappe/gantt) and is inspired by [NxDeckGantt](https://github.com/jeobz/NxDeckGantt) and [Deck2Gantt](https://gitlab.opencode.de/wuerzburg/deck2gantt).
+
+
 It can also be used outside of Nextcloud: Just download everything and open index.html. You need a Nextcloud App Password to be able to connect to your Deck boards (in Nexcloud go to Settings -> Security -> scroll down to "Add App Password"). 
 
 
@@ -32,8 +35,19 @@ Every interaction is synchronized with Deck via the Deck API. Also changes in De
 
 Here is an overview of the parameters that can be edited:
 
-<img width="400" alt="grafik" src="https://github.com/user-attachments/assets/43f5ade7-4bb2-4692-9194-493e4b553207" />
-
+||Deck show|... edit|Gantt show|... edit|
+|---|---|---|---|---|
+|**Task/card order**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+|**Title**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+|**Labels**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+|**Due date**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:  (by mouse)|
+|**Start date**| :x: | :x: | :white_check_mark: | :white_check_mark:  (by mouse)|
+|**Done**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|**Progress**| :x: | :x: | :white_check_mark: | :white_check_mark:  (by mouse)|
+|**Description/Notes**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|**Checkbox states**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|**Export**| :white_check_mark:  (csv)| :x: | :white_check_mark: | :x: |
+|**Import**| :x: | :x: | :white_check_mark: | :x: |
 
 
 
