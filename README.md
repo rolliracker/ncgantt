@@ -71,7 +71,7 @@ Install ncgantt app:
 git clone https://github.com/rolliracker/ncgantt.git /var/www/html/custom_apps/ncgantt
 
 # Activate the app 
-occ app:enable ncgantt
+php occ app:enable ncgantt
 ```
 After reloading Nextcloud in your browser you should see a Gantt icon in the app bar. If not, try to open it via https://<your-nextcloud.com>/apps/ncgantt
 
