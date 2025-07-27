@@ -31,7 +31,7 @@ You can eddit the description by clicking on the pencil or in the text:
 
 Every interaction is synchronized with Deck via the Deck API. Also changes in Deck lead to an update of the Gantt chart, so one can have both Apps open and use them simoultaneously, i.e. create a card in Deck and then move it to the right position in time in Gantt.
 
-### Overview of the parameters that can be edited:
+### Overview of the parameters that can be viewed or edited:
 
 ||Deck show|... edit|Gantt show|... edit|
 |---|---|---|---|---|
