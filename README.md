@@ -44,8 +44,10 @@ Every interaction is synchronized with Deck via the Deck API. Also changes in De
 |**Task/card order**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 |**Title**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 |**Labels**| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-|**Export**| ( :white_check_mark: )  (csv)| - | :white_check_mark: (json) | - |
+|**Export**| :ballot_box_with_check: (csv) *| - | :white_check_mark: (json) | - |
 |**Import**| :x: | - | :white_check_mark: (json) | - |
+
+* Does not contain full board structure and cannot be used to recreate a board.
 
 ## Installation
 ### Outside Nextcloud
