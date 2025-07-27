@@ -50,7 +50,7 @@ Every interaction is synchronized with Deck via the Deck API. Also changes in De
 ## Installation
 ### Outside Nextcloud
 
-The app can be used outside of Nextcloud: Just download everything and open index.html. You need a Nextcloud App Password to be able to connect to your Deck boards (in Nexcloud go to Settings -> Security -> scroll down to "Add App Password"). 
+The app can be used outside of Nextcloud: Just download everything and open index.html. You should use a Nextcloud App Password to connect to your Deck boards (in Nexcloud go to Settings -> Security -> scroll down to "Add App Password"). 
 
 ### Inside Nextcloud
 Connect to your Nextcloud installation. E.g. if it is in a Docker container
