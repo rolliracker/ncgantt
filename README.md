@@ -25,7 +25,7 @@ Clicking on a bar opens a popup with the card description:
 
 <img width="650" alt="3b699ce4509895d77a01090fff37b3ddb5048234" src="https://github.com/user-attachments/assets/3204b594-c15d-439d-85d4-faa569520336" />
 
-You can eddit the description by clicking on the pencil:
+You can eddit the description by clicking on the pencil or in the text:
 
 <img width="650"  alt="69c71d35a1e71d31115798e5bb534da08c6c9f7d" src="https://github.com/user-attachments/assets/4f0c0d46-89bc-42be-afd2-9402c613b999" />
 
