@@ -3,7 +3,7 @@
 A Nextcloud app that views and updates Deck boards in a Gantt chart.
 
 
-This App is under development - use it at your own risk. It adds text to the description of a Deck card containing the start date and the progress when you change one of these parameters in the Gantt app! This is because Deck does not yet have these parameters natetively.
+This App is under development - use it at your own risk. It adds text to the description of a Deck card containing the start date and the progress when you change one of these parameters in the Gantt app! This is because Deck does not yet have these parameters natively implemented.
 
 
 It uses the [frappe-gantt library](https://github.com/frappe/gantt) and is inspired by [NxDeckGantt](https://github.com/jeobz/NxDeckGantt) and [Deck2Gantt](https://gitlab.opencode.de/wuerzburg/deck2gantt).
