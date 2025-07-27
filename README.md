@@ -47,7 +47,7 @@ Every interaction is synchronized with Deck via the Deck API. Also changes in De
 |**Export**| :ballot_box_with_check: (csv) *| - | :white_check_mark: (json) | - |
 |**Import**| :x: | - | :white_check_mark: (json) | - |
 
-* Does not contain full board structure and cannot be used to recreate a board.
+\* Does not contain full board structure.
 
 ## Installation
 ### Outside Nextcloud
