@@ -89,3 +89,4 @@ php occ app:disable ncgantt
 # Activate
 php occ app:enable ncgantt
 ```
+After updating, do a hard refresh of the app in your browser by pressing Ctrl + Shift + R 
