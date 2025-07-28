@@ -19,7 +19,7 @@ is shown as a Gantt chart like that:
 
 <img width="2944" alt="af7e4431ff2402fee226a51848e51d8a198c1225" src="https://github.com/user-attachments/assets/c22e8017-67e8-4055-bb03-0e3e36cdc4d2" />
 
-The time range and progress of a card can be changed by dragging the bar or its handles with the mouse. The numbers like (6/7) next to the titles synchronize with the number of checked over total number of checkboxes in the description (same as in Deck). The green check mark symbol synchronize with the “Done” field of Deck. It is automatically set when the progress is changed to 100%. A red exclamation mark denotes delay.
+The time range and progress of a card can be changed by dragging the bar or its handles with the mouse. The numbers in parentheses (e.g., 6/7) next to the titles indicate the number of checked checkboxes out of the total in the description — just like in Deck. The green check mark symbol synchronize with the “Done” field of Deck. It is automatically set when the progress is changed to 100%. A red exclamation mark denotes delay.
 
 Clicking on a bar opens a popup with the card description:
 
