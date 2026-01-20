@@ -1,5 +1,8 @@
 # ncGantt
 
+> [!IMPORTANT]  
+> We have moved our project to [nextcloud-community/ncgantt](https://github.com/nextcloud-community/ncgantt). Please open feature requests and ideas there.
+
 A Nextcloud app that views and updates Deck boards in a Gantt chart.
 
 
